@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <title></title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1 id="titulo"></h1>
+        <button id="btn-nuevo"><img id="img-nuevo" class="imagen-cargar-archivo" src="media/nuevo.png"><br><span id="txt-nuevo">...?</span></button>
+        <button id="btn-abrir"><img id="img-abrir" class="imagen-cargar-archivo" src="media/abrir.png"><br><span id="txt-abrir">...?</span></button>
+        <h2 id="txt-recientes">Recientes:</h2>
+        <ul id="recientes"></ul>
+        <script src="limpiarTodo.js"></script>
+        <script src="actualizarPantalla.js"></script>
+        <script src="inicio.js"></script>
+    </body>
+</html>

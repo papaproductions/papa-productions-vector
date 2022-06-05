@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <img class="logo" src="../icono.png"><div class="appname"><h1 id="nombre">Papa productions Vector</h1></div>
+        <i id="descripcion">"A free and open source program that failed to load properly lmao"</i>
+        <ul>
+            <li>v<span id="version">6.9.4.20</span></li>
+            <li id="licencia"></li>
+            <li><span id="por"></span>&nbsp;<span title="que tal" id="creador">Kamil Alejandro</span>.</li>
+        </ul>
+        <script>
+            vector.obtenerLocale().then(locale => {
+                let nombre = document.getElementById("nombre");
+                let descripcion = document.getElementById("descripcion");
+                let version = document.getElementById("version");
+                let licencia = document.getElementById("licencia");
+                let por = document.getElementById("por");
+                let creador = document.getElementById("creador");
+                document.title = locale.about.replace(/{appname}/g, locale.appname);
+                creador.title = locale.aboutAuthorEasterEgg;
+                por.innerHTML = locale.by;
+                nombre.innerHTML = locale.appname;
+                descripcion.innerHTML = `"${locale.description}"`;
+                vector.obtenerInformacionDelProyecto().then(datos => {
+                    version.innerText = datos.version;
+                    licencia.innerText = locale.license.replace(/{license}/g, datos.license);
+                    creador.innerText = datos.author;
+                });
+            });
+        </script>
+    </body>
+</html>

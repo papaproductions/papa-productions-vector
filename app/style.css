@@ -1,0 +1,102 @@
+body {
+    --color-secundario: #222;
+    background-color: #333;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    --boton: 95px;
+    margin: 3px;
+}
+
+.imagen-cargar-archivo {
+    width: 64px;
+    height: 64px;
+}
+
+button,input[type="image"] {
+    background-color: var(--color-secundario);
+    color: white;
+    border-color: transparent;
+    border-radius: 10px;
+    font-size: large;
+}
+
+select {
+    background-color: var(--color-secundario);
+    color: white;
+}
+
+input {
+    color: white;
+    background-color: var(--color-secundario);
+}
+
+#canvas {
+    border: 1px solid black;
+    float: left;
+    position: fixed;
+    background: repeat url("media/transparencia.png");
+    max-width: 95%;
+    max-height: 95%;
+    width: auto;
+    height: auto;
+}
+
+#botones {
+    float: right;
+}
+
+.btn-dibujo {
+    width: var(--boton);
+    height: var(--boton);
+    
+}
+
+.img-btn-dibujo {
+    width: calc(var(--boton) - 10px);
+    height: calc(var(--boton) - 10px);
+    background-color: white;
+}
+
+.btn-dibujo-w {
+    width: var(--boton);
+}
+
+.archivo-reciente {
+    background-color: var(--color-secundario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.thumb {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    background: repeat url("media/transparencia.png");
+}
+
+.archivo {
+    color: white;
+    padding-left: 10px;
+}
+
+.li-archivo {
+    list-style-type: none;
+}
+
+.no-existente {
+    color: red;
+}
+.logo {
+    float: left;
+    width: 128px;
+    height: 128px;
+}
+.appname {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

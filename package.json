@@ -1,0 +1,18 @@
+{
+  "name": "papa-productions-vector",
+  "version": "2.0.0",
+  "description": "Papa productions Vector es un programa de dibujo gratis y codigo libre.",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kamil Alejandro",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^18.2.3"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1"
+  }
+}
