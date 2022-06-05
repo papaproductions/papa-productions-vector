@@ -12,4 +12,4 @@ Papa productions Vector es un programa de dibujo gratis, basado en vectors y c&o
 
 # POR QUE ESTE CODIGO ESTA EN ESPAÑOL???
 
-Lo siento. Es un mal h&acute;bito. Eventualmente reescribir&eacute; los nombres a ingl&eacute;s.
+Lo siento. Es un mal h&aacute;bito. Eventualmente reescribir&eacute; los nombres a ingl&eacute;s.
