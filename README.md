@@ -1,4 +1,4 @@
-Para ver en español, ve a README-es.md
+Para ver en español, ve a (README-es.md)[/README-es.md]
 
 # Papa productions Vector
 
