@@ -52,7 +52,6 @@ let historial = {
     acciones: []
 };
 let inicioSeleccion = { x: 0, y: 0 };
-let colorSeleccion = [50, 50, 255];
 let seleccion = { x: 0, y: 0 };
 let ultimaPosicion = { x: 0, y: 0 };
 let posicionInicial = { x: 0, y: 0 };
@@ -62,6 +61,7 @@ let modos = [
     "borrador",
     "seleccion"
 ];
+let botonPresionado = -1;
 let ultimaCaptura;
 let posicionesBorrador = [];
 let fecha = new Date();
@@ -144,7 +144,40 @@ vector.obtenerLocale().then(l => {
                 break;
                 case "seleccion" :
                     seleccion = posicion;
-                    if(moviendo) {
+                    if(botonPresionado !== -1) {
+                        let escalarX = 1;
+                        let escalarY = 1;
+                        switch(botonPresionado) {
+                            case 0 :
+                                escalarX = -1;
+                                escalarY = -1;
+                            break;
+                            case 1 :
+                                escalarX = 0;
+                                escalarY = -1;
+                            break;
+                            case 2 :
+                                escalarY = -1;
+                            break;
+                            case 3 :
+                                escalarX = -1;
+                                escalarY = 0;
+                            break;
+                            case 4 :
+                                escalarY = 0;
+                            break;
+                            case 5 :
+                                escalarX = -1;
+                            break;
+                            case 6 :
+                                escalarX = 0;
+                            break;
+                        }
+                        escalarTrazos(seleccionado, posicion, ultimaPosicion, escalarX, escalarY);
+                        actualizarPantalla(ctx, datos, seleccionado);
+                        ultimaPosicion = posicion;
+                    }
+                    else if(moviendo) {
                         moverTrazo(posicion, ultimaPosicion);
                         ultimaPosicion = posicion;
                         actualizarSeleccion();
@@ -167,6 +200,8 @@ vector.obtenerLocale().then(l => {
 
     canvas.addEventListener("mousedown", ev => {
         let capa = capas.selectedIndex < 0 ? datos.capas[0].identificador : datos.capas[capas.selectedIndex].identificador;
+        let rect = canvas.getBoundingClientRect();
+        let posicionMouse = { x: ev.clientX * parseFloat(canvas.width) / rect.width - rect.left, y: ev.clientY * parseFloat(canvas.height) / rect.height - rect.top };
         if(!datos.capas.find(c => c.identificador === capa).visible || datos.capas.find(c => c.identificador === capa).bloqueada) {
             vector.mostrarError({
                 title: locale.lockedLayerErrorTitle, 
@@ -174,8 +209,6 @@ vector.obtenerLocale().then(l => {
             });
             return;
         }
-        let rect = canvas.getBoundingClientRect();
-        let posicionMouse = { x: ev.clientX * parseFloat(canvas.width) / rect.width - rect.left, y: ev.clientY * parseFloat(canvas.height) / rect.height - rect.top };
         dibujando = true;
         switch(modo) {
             case "pincel" :
@@ -193,7 +226,13 @@ vector.obtenerLocale().then(l => {
                 posicionesBorrador = [];
             break;
             case "seleccion" :
-                if(seleccionado.findIndex(s => {
+                ultimaPosicion = posicionMouse;
+                let bounds = obtenerExtremos(seleccionado);
+                let boton = obtenerBotonPresionado(bounds.puntosX[0], bounds.puntosY[0], bounds.puntosX[bounds.puntosX.length - 1], bounds.puntosY[bounds.puntosY.length - 1], posicionMouse.x, posicionMouse.y);
+                if(boton !== -1) {
+                    botonPresionado = boton;
+                }
+                else if(seleccionado.findIndex(s => {
                     switch(s.tipo) {
                         case "trazo" :
                             let x = s.puntos.map(p => p.x).sort((a, b) => a - b);
@@ -278,6 +317,7 @@ vector.obtenerLocale().then(l => {
             break;
         }
         moviendo = false;
+        botonPresionado = -1;
     });
 
     configurar();
@@ -925,4 +965,43 @@ function actualizarSeleccion() {
     let datosFiltrados = JSON.parse(JSON.stringify(datos));
     datosFiltrados.trazos = seleccionado;
     actualizarPantalla(ctx, datosFiltrados, seleccionado, false);
+}
+
+//24/06/22 - Necesito ayuda mental
+//25/06/22 - Despues de semanas, esta funcion finalmente funciona decentemente. FINALMENTE AAAAA
+function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY = 1) {
+    let extremos = obtenerExtremos(trazos);
+    let w = extremos.puntosX[extremos.puntosX.length - 1] - extremos.puntosX[0];
+    let h = extremos.puntosY[extremos.puntosY.length - 1] - extremos.puntosY[0];
+    let invertidoX = (1 - escalarX) / 2;
+    let invertidoY = (1 - escalarY) / 2;
+    let posicionBoton = obtenerPosicion(botonPresionado);
+    trazos.forEach(t => {
+        switch(t.tipo) {
+            case "trazo" :
+                t.puntos.forEach(p => {
+                    if(escalarX !== 0) {
+                        if((ultimaPosicion.x - posicion.x) * escalarX < w) {
+                        p.x = extremos.puntosX[0] + invertidoX * (posicion.x - ultimaPosicion.x) + ((p.x - extremos.puntosX[0]) * (w + (posicion.x - ultimaPosicion.x) * escalarX) / w);
+                        }
+                        else {
+                            p.x = extremos.puntosX[0] - (p.x - extremos.puntosX[0]);
+                            posicionBoton.x = 2 - posicionBoton.x;
+                        }
+                    }
+                    if(escalarY !== 0) {
+                        if((ultimaPosicion.y - posicion.y) * escalarY < h) {
+                            p.y = extremos.puntosY[0] + invertidoY * (posicion.y - ultimaPosicion.y) + ((p.y - extremos.puntosY[0]) * (h + (posicion.y - ultimaPosicion.y) * escalarY) / h);
+                        }
+                        else {
+                            p.y = extremos.puntosY[0] - (p.y - extremos.puntosY[0]);
+                            posicionBoton.y = 2 - posicionBoton.y;
+                        }
+                    } //25/06/22 - Linea 1000
+                });
+            break;
+        }
+    });
+    botonPresionado = obtenerBoton(posicionBoton);
+    return trazos;
 }

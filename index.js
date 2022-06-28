@@ -285,7 +285,7 @@ ipcMain.handle("obtenerRecientes", (event, args) => {
             archivo.exists = true;
         }
         catch(err) {
-            archivo.data = JSON.parse(fs.readFileSync("pregunta.ppv").toString());
+            archivo.data = JSON.parse(fs.readFileSync(path.join(__dirname, "pregunta.ppv")).toString());
             archivo.exists = false;
         }
         return archivo;
