@@ -1,6 +1,6 @@
 # Papa productions Vector
 
-Papa productions Vector es un programa de dibujo gratis, basado en vectors y c&oacute;digo libre.
+Papa productions Vector es un programa de dibujo gratis, basado en vectors y c&oacute;digo libre. Es una versi&oacute;n reescrita de un programa de Adobe AIR que hice hace bastante tiempo. Nota que vector sigue en beta y ciertas partes del programa no est&aacute;n implementadas o no funcionan correctamente.
 
 # Compilaci&oacute;n
 
