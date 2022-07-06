@@ -2,7 +2,7 @@ Para ver en español, ve a [README-es.md](/README-es.md)
 
 # Papa productions Vector
 
-Papa productions Vector is a free, vector-based and open source drawing program. It's a rewrite of an old Adobe AIR program I wrote a long time ago that went under the same name. Note that it is still in beta and some features are missing or buggy.
+Papa productions Vector is a free, vector-based and open source drawing program. It's a rewrite of an old Adobe AIR program I wrote a long time ago that went under the same name. Note that it is still in beta and some features are buggy or missing.
 
 # Building
 
