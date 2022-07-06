@@ -2,7 +2,7 @@ let cache = [];
 let sBotones = 20;
 let colorSeleccion = [50, 50, 255];
 
-async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true) {
+async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usarBlending = true) {
     var organizado = JSON.parse(JSON.stringify(datos.trazos)).sort((a, b) => datos.capas.findIndex(c => b.capa === c.identificador) - datos.capas.findIndex(c => a.capa === c.identificador)).filter(c => datos.capas.find(capa => capa.identificador === c.capa).visible);
     if(limpiar) limpiarTodo(ctx);
     ctx.lineCap = "round";
@@ -17,7 +17,8 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true) {
         switch(trazo.tipo) {
             case "trazo" :
                 limpiarTodo(ctxBlending);
-                let c = trazo.blending ? ctxBlending : ctx;
+                let blending = usarBlending && trazo.blending;
+                let c = blending ? ctxBlending : ctx;
                 c.beginPath();
                 try {
                     c.moveTo(trazo.puntos[0].x, trazo.puntos[0].y);
@@ -31,7 +32,7 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true) {
                     c.lineTo(t.x, t.y);
                 });
                 c.stroke();
-                if(trazo.blending) {
+                if(blending) {
                     let imgBlending = c.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
                     let img = ctx.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
                     imgBlending.data.forEach((p, i) => {

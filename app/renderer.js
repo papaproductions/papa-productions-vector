@@ -965,8 +965,7 @@ function actualizarSeleccion() {
     ctx.putImageData(ultimaCaptura, 0, 0);
     let datosFiltrados = JSON.parse(JSON.stringify(datos));
     datosFiltrados.trazos = seleccionado;
-    datosFiltrados.trazos.forEach(t => t. blending = false);
-    actualizarPantalla(ctx, datosFiltrados, seleccionado, false);
+    actualizarPantalla(ctx, datosFiltrados, seleccionado, false, false);
 }
 
 //24/06/22 - Necesito ayuda mental
