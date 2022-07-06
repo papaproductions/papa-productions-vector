@@ -24,5 +24,7 @@ contextBridge.exposeInMainWorld("vector", {
     alMoverAlFrente: callback => ipcRenderer.on("moverAlFrente", callback),
     alMoverAlFondo: callback => ipcRenderer.on("moverAlFondo", callback),
     cambiarRPC: () => ipcRenderer.invoke("cambiarRPC"),
-    alImportarImagen: callback => ipcRenderer.on("importarImagen", callback)
+    alImportarImagen: callback => ipcRenderer.on("importarImagen", callback),
+    actualizarBlending: args => ipcRenderer.invoke("actualizarBlending", args),
+    alCambiarBlending: callback => ipcRenderer.on("cambiarBlending", callback)
 });

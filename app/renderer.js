@@ -318,6 +318,7 @@ vector.obtenerLocale().then(l => {
         }
         moviendo = false;
         botonPresionado = -1;
+        vector.actualizarBlending(seleccionado.length > 0 && seleccionado.filter(t => t.blending).length === seleccionado.length);
     });
 
     configurar();
@@ -1006,3 +1007,8 @@ function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY 
     botonPresionado = obtenerBoton(posicionBoton);
     return trazos;
 }
+
+vector.alCambiarBlending((event, args) => {
+    seleccionado.forEach(t => t.blending = args);
+    actualizarPantalla(ctx, datos, seleccionado);
+});

@@ -68,5 +68,6 @@
     "projectFileExtensionName": "Proyecto de {appname}",
     "pngExtensionName": "Imagen PNG",
     "editing": "Editando {file}",
-    "importImage": "Importar imagen..."
+    "importImage": "Importar imagen...",
+    "enableBlending": "Habilitar blending"
 }

@@ -151,6 +151,14 @@ function createWindow() {
             mainWindow.webContents.send("moverAlFondo")
         }
     }));
+    let opcionBlending = new MenuItem({
+        label: locale.enableBlending,
+        type: "checkbox",
+        click: (menuItem, browserWindow, event) => {
+            mainWindow.webContents.send("cambiarBlending", menuItem.checked)
+        }
+    });
+    edicion.append(opcionBlending);
     ayuda.append(new MenuItem({
         label: locale.menuBarHelpAbout,
         click: (menuItem, browserWindow) => {
@@ -218,6 +226,7 @@ Creado por: Kamil Alejandro`
     ipcMain.handle("guardarImagen", (event, args) => {
         mainWindow.webContents.send("obtenerPNG", args);
     });
+    ipcMain.handle("actualizarBlending", (event, args) => opcionBlending.checked = args);
     mainWindow.on("close", event => {
         if(!cambiado) return;
         event.preventDefault();
