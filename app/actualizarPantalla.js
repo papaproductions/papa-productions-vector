@@ -7,22 +7,44 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true) {
     if(limpiar) limpiarTodo(ctx);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
+    let canvasBlending = document.createElement("canvas");
+    canvasBlending.width = ctx.canvas.width;
+    canvasBlending.height = ctx.canvas.height;
+    let ctxBlending = canvasBlending.getContext("2d");
+    ctxBlending.lineCap = "round";
+    ctxBlending.lineJoin = "round";
     for(let trazo of organizado) {
         switch(trazo.tipo) {
             case "trazo" :
-                ctx.beginPath();
+                limpiarTodo(ctxBlending);
+                let c = trazo.blending ? ctxBlending : ctx;
+                c.beginPath();
                 try {
-                    ctx.moveTo(trazo.puntos[0].x, trazo.puntos[0].y);
+                    c.moveTo(trazo.puntos[0].x, trazo.puntos[0].y);
                 }
                 catch(err) {
                     //xd
                 }
-                ctx.lineWidth = trazo.grosor;
-                ctx.strokeStyle = trazo.color;
+                c.lineWidth = trazo.grosor;
+                c.strokeStyle = trazo.color;
                 trazo.puntos.forEach(t => {
-                    ctx.lineTo(t.x, t.y);
+                    c.lineTo(t.x, t.y);
                 });
-                ctx.stroke();
+                c.stroke();
+                if(trazo.blending) {
+                    let imgBlending = c.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
+                    let img = ctx.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
+                    imgBlending.data.forEach((p, i) => {
+                        let n = p + img.data[i];
+                        if(n > 255) {
+                            img.data[i] = 255;
+                        }
+                        else {
+                            img.data[i] = n;
+                        }
+                    });
+                    ctx.putImageData(img, 0, 0);
+                }
             break;
             case "imagen" :
                 let imagen = cache.find(i => i.archivo === trazo.imagen);

@@ -794,7 +794,7 @@ vector.alObtenerDatos((event, args) => {
 vector.alObtenerPNG((event, args) => {
     let anterior = { width: canvas.width, height: canvas.height };
     let datosEscalados = JSON.parse(JSON.stringify(datos));
-    canvas.width = args.width;
+    canvas.width = args.height * canvas.width / canvas.height;
     canvas.height = args.height;
     datosEscalados.trazos = datosEscalados.trazos.map(t => {
         switch(t.tipo) {
@@ -810,7 +810,7 @@ vector.alObtenerPNG((event, args) => {
             break;
             case "imagen" :
                 let imagen = cache.find(i => i.archivo === t.imagen).imagen;
-                t.w = (t.w || imagen.width) * args.width / anterior.width;
+                t.w = (t.w || imagen.width) * (args.height * (anterior.width / anterior.height) / anterior.width);
                 t.h = (t.h || imagen.height) * args.height / anterior.height;
                 t.x *= args.width / anterior.width;
                 t.y *= args.height / anterior.height;
@@ -964,6 +964,7 @@ function actualizarSeleccion() {
     ctx.putImageData(ultimaCaptura, 0, 0);
     let datosFiltrados = JSON.parse(JSON.stringify(datos));
     datosFiltrados.trazos = seleccionado;
+    datosFiltrados.trazos.forEach(t => t. blending = false);
     actualizarPantalla(ctx, datosFiltrados, seleccionado, false);
 }
 

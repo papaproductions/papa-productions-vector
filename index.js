@@ -45,8 +45,8 @@ function createWindow() {
         try {
             locale = require("./locale/en.json");
         }
-        catch {
-            errorFatal();
+        catch(err) {
+            errorFatal(err);
             return;
         }
     }
@@ -203,8 +203,18 @@ Creado por: Kamil Alejandro`
 
     Menu.setApplicationMenu(menu);
     // and load the index.html of the app.
-    mainWindow.loadFile('./app/index.html').then(() => mainWindow.webContents.openDevTools()).catch(() => errorFatal());
-
+    let archivoEnArgumentos = process.argv[process.argv.length - 1];
+    if(path.extname(archivoEnArgumentos) === ".ppv") {
+        try {
+            fs.statSync(archivoEnArgumentos);
+            archivoActual = archivoEnArgumentos;
+            mainWindow.loadFile("app/dibujo.html");
+        }
+        catch {}
+    }
+    else {
+        mainWindow.loadFile('./app/index.html').then(() => mainWindow.webContents.openDevTools()).catch(err => errorFatal(err));
+    }
     ipcMain.handle("guardarImagen", (event, args) => {
         mainWindow.webContents.send("obtenerPNG", args);
     });
@@ -361,11 +371,13 @@ ipcMain.handle("registrarCambio", (event, args) => {
     cambiado = args;
 });
 
-function errorFatal() {
+function errorFatal(err) {
     BrowserWindow.getAllWindows()[0].setTitle("Papa productions Vector but it's broken.");
         dialog.showErrorBox("Fatal error", `Your Papa productions Vector installation is broken. Please reinstall Vector completely.
 
-Tu instalación de Papa productions Vector está dañada. Por favor vuelve a instalar Vector por completo.`)
+Tu instalación de Papa productions Vector está dañada. Por favor vuelve a instalar Vector por completo.
+
+${err.stack}`)
     app.exit(1);
 }
 
