@@ -1,6 +1,11 @@
 let cache = [];
 let sBotones = 20;
 let colorSeleccion = [50, 50, 255];
+let blendingHabilitado = true;
+
+function habilitarBlending(b) {
+    blendingHabilitado = b;
+}
 
 async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usarBlending = true) {
     var organizado = JSON.parse(JSON.stringify(datos.trazos)).sort((a, b) => datos.capas.findIndex(c => b.capa === c.identificador) - datos.capas.findIndex(c => a.capa === c.identificador)).filter(c => datos.capas.find(capa => capa.identificador === c.capa).visible);
@@ -17,7 +22,7 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usar
         switch(trazo.tipo) {
             case "trazo" :
                 limpiarTodo(ctxBlending);
-                let blending = usarBlending && trazo.blending;
+                let blending = blendingHabilitado && usarBlending && trazo.blending;
                 let c = blending ? ctxBlending : ctx;
                 c.beginPath();
                 try {

@@ -69,5 +69,6 @@
     "pngExtensionName": "Imagen PNG",
     "editing": "Editando {file}",
     "importImage": "Importar imagen...",
-    "enableBlending": "Habilitar blending"
+    "enableBlending": "Habilitar blending",
+    "visuallyDisableBlending": "Visualmente deshabilitar blending"
 }

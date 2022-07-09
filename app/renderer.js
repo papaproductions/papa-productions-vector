@@ -173,7 +173,7 @@ vector.obtenerLocale().then(l => {
                                 escalarX = 0;
                             break;
                         }
-                        escalarTrazos(seleccionado, posicion, ultimaPosicion, escalarX, escalarY);
+                        escalarTrazos(seleccionado, posicion, ultimaPosicion, escalarX, escalarY, shiftPresionado);
                         actualizarPantalla(ctx, datos, seleccionado);
                         ultimaPosicion = posicion;
                     }
@@ -389,6 +389,8 @@ vector.obtenerLocale().then(l => {
                 break;
                 case "v" :
                     pegar();
+                    modo = "seleccion";
+                    actualizarTitulo();
                 break;
             }
         }
@@ -970,13 +972,19 @@ function actualizarSeleccion() {
 
 //24/06/22 - Necesito ayuda mental
 //25/06/22 - Despues de semanas, esta funcion finalmente funciona decentemente. FINALMENTE AAAAA
-function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY = 1) {
+function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY = 1, bloquear = false) {
     let extremos = obtenerExtremos(trazos);
     let w = extremos.puntosX[extremos.puntosX.length - 1] - extremos.puntosX[0];
     let h = extremos.puntosY[extremos.puntosY.length - 1] - extremos.puntosY[0];
     let invertidoX = (1 - escalarX) / 2;
     let invertidoY = (1 - escalarY) / 2;
     let posicionBoton = obtenerPosicion(botonPresionado);
+    if(bloquear) {
+        ultimaPosicion.x = Math.max(ultimaPosicion.x, ultimaPosicion.y);
+        ultimaPosicion.y = ultimaPosicion.x;
+        posicion.x = Math.max(posicion.x, posicion.y);
+        posicion.y = posicion.x;
+    }
     trazos.forEach(t => {
         switch(t.tipo) {
             case "trazo" :
@@ -1009,5 +1017,10 @@ function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY 
 
 vector.alCambiarBlending((event, args) => {
     seleccionado.forEach(t => t.blending = args);
+    actualizarPantalla(ctx, datos, seleccionado);
+});
+
+vector.alDeshabilitarBlending((event, args) => {
+    habilitarBlending(!args);
     actualizarPantalla(ctx, datos, seleccionado);
 });
