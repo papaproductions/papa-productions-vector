@@ -54,9 +54,7 @@ function createWindow() {
         label: locale.menuBarFileNew,
         click: (menuItem, browserWindow, event) => {
             archivoActual = undefined;
-            browserWindow.loadFile("app/dibujo.html");
-            cambiado = false;
-            cambiarRPC();
+            nuevo();
         }
     }));
     archivo.append(new MenuItem({
@@ -159,6 +157,13 @@ function createWindow() {
         }
     });
     edicion.append(opcionBlending);
+    edicion.append(new MenuItem({
+        label: locale.visuallyDisableBlending,
+        type: "checkbox",
+        click: (menuItem, browserWindow, event) => {
+            mainWindow.webContents.send("deshabilitarBlending", menuItem.checked)
+        }
+    }));
     ayuda.append(new MenuItem({
         label: locale.menuBarHelpAbout,
         click: (menuItem, browserWindow) => {
@@ -216,7 +221,7 @@ Creado por: Kamil Alejandro`
         try {
             fs.statSync(archivoEnArgumentos);
             archivoActual = archivoEnArgumentos;
-            mainWindow.loadFile("app/dibujo.html");
+            nuevo();
         }
         catch {}
     }
@@ -481,10 +486,15 @@ function abrir(browserWindow, index) {
         if(!f) return;
         archivoActual = f[0];
     }
-    cambiarRPC();
     ponerEnRecientes(archivoActual);
-    browserWindow.loadFile("app/dibujo.html");
+    nuevo();
     cambiado = false;
+}
+
+function nuevo() {
+    mainWindow.loadFile("app/dibujo.html");
+    cambiado = false;
+    cambiarRPC();
 }
 
 cliente.login({ clientId: idDiscord }).catch(() => console.log("Failed to connect with Discord."));
