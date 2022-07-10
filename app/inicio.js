@@ -68,8 +68,7 @@ vector.obtenerLocale().then(locale => {
     }
 
     btnNuevo.addEventListener("click", () => {
-        vector.cambiarRPC();
-        document.location.href = "dibujo.html";
+        vector.nuevo();
     });
 
     btnAbrir.addEventListener("click", () => {

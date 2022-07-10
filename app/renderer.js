@@ -482,64 +482,27 @@ vector.obtenerLocale().then(l => {
 });
 function configurar() {
     vector.obtenerArchivoActual().then(d => {
-        if(!d) {
-            datos = {
-                res: [1280, 720],
-                capas: [
-                    {
-                        nombre: `${locale.layer} 1`,
-                        identificador: 0,
-                        visible: true,
-                        bloqueada: false
-                    },
-                    {
-                        nombre: locale.backgroundLayer,
-                        identificador: 1,
-                        visible: true,
-                        bloqueada: true
-                    }
-                ],
-                trazos: [
-                    {
-                        capa: 1,
-                        color: "#FFFFFF",
-                        grosor: canvas.height,
-                        puntos: [
-                            {
-                                x: 0,
-                                y: canvas.height / 2
-                            },
-                            {
-                                x: canvas.width,
-                                y: canvas.height / 2
-                            }
-                        ],
-                        tipo: "trazo"
-                    }
-                ]
-            };
-        }
-        else {
-            datos = d.datos;
-            for(let c of datos.capas) {
-                if(!Object.keys(c).includes("visible")) {
-                    c.visible = true;
-                }
-                if(!Object.keys(c).includes("bloqueada")) {
-                    c.bloqueada = false;
-                }
+        datos = d.datos;
+        for(let c of datos.capas) {
+            if(!Object.keys(c).includes("visible")) {
+                c.visible = true;
             }
-            for(let t of datos.trazos) {
-                if(!Object.keys(t).includes("tipo")) {
-                    t.tipo = "trazo";
-                }
+            if(!Object.keys(c).includes("bloqueada")) {
+                c.bloqueada = false;
             }
-            archivoActual = d.archivo;
         }
+        for(let t of datos.trazos) {
+            if(!Object.keys(t).includes("tipo")) {
+                t.tipo = "trazo";
+            }
+        }
+        if(d.archivo) archivoActual = d.archivo;
+        canvas.width = datos.res[0];
+        canvas.height = datos.res[1];
         actualizarPantalla(ctx, datos, seleccionado);
         actualizarCapas();
         actualizarTitulo();
-    })
+    });
 }
 
 function actualizarCapas() {

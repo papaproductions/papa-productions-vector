@@ -42,7 +42,7 @@
     "stringSaveFailure": "The provided data is not an object. Saving has been blocked to avoid possible malware.",
     "stringSaveFailureTitle": "Saving blocked",
     "parseFailureTitle": "Format error",
-    "parseFailure": "The specified file is not a Vector proyect or it's corrupted.",
+    "parseFailure": "The specified file is not a Vector proyect or is corrupted.",
     "loadFailureTitle": "Load failure",
     "loadFailure": "The specified file could not be loaded. It could be due to lacking permissions.",
     "backgroundLayer": "Background",
@@ -70,5 +70,9 @@
     "editing": "Editing {file}",
     "importImage": "Import image...",
     "enableBlending": "Enable blending",
-    "visuallyDisableBlending": "Visually disable blending"
+    "visuallyDisableBlending": "Visually disable blending",
+    "includeBackground": "Include background layer: ",
+    "proyectConfigurationTitle": "{appname} - Create New Project",
+    "saveImage": "Save image",
+    "createNewProject": "Create new project"
 }

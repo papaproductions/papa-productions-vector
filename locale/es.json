@@ -70,5 +70,9 @@
     "editing": "Editando {file}",
     "importImage": "Importar imagen...",
     "enableBlending": "Habilitar blending",
-    "visuallyDisableBlending": "Visualmente deshabilitar blending"
+    "visuallyDisableBlending": "Visualmente deshabilitar blending",
+    "includeBackground": "Incluir una capa de fondo: ",
+    "proyectConfigurationTitle": "{appname} - Crear nuevo proyecto",
+    "saveImage": "Guardar imagen",
+    "createNewProject": "Crear nuevo proyecto"
 }

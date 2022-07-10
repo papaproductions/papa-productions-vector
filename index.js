@@ -26,6 +26,7 @@ let plataformas = {
     "darwin": "MacOS"
 };
 let rpcListo = false;
+let nuevoProyecto;
 
 function createWindow() {
     // Create the browser window.
@@ -54,7 +55,7 @@ function createWindow() {
         label: locale.menuBarFileNew,
         click: (menuItem, browserWindow, event) => {
             archivoActual = undefined;
-            nuevo();
+            abrirArchivoActual(true);
         }
     }));
     archivo.append(new MenuItem({
@@ -221,7 +222,7 @@ Creado por: Kamil Alejandro`
         try {
             fs.statSync(archivoEnArgumentos);
             archivoActual = archivoEnArgumentos;
-            nuevo();
+            abrirArchivoActual();
         }
         catch {}
     }
@@ -300,6 +301,11 @@ ipcMain.handle("mostrarError", (event, args) => {
     return dialog.showErrorBox(args.title, args.message);
 });
 
+ipcMain.handle("nuevoProyecto", (event, args) => {
+    nuevoProyecto = args;
+    abrirArchivoActual();
+});
+
 ipcMain.handle("obtenerRecientes", (event, args) => {
     return recientes.map(f => {
         let archivo = JSON.parse(JSON.stringify(f));
@@ -325,24 +331,65 @@ ipcMain.handle("obtenerLocale", (event, args) => {
 });
 
 ipcMain.handle("obtenerArchivoActual", (event, args) => {
-    if(!archivoActual) return;
     let f;
-    try {
-        f = fs.readFileSync(archivoActual);
-    }
-    catch(err) {
-        dialog.showErrorBox(locale.loadFailureTitle, locale.loadFailure);
-        return;
-    }
-    try {
+    if(nuevoProyecto) {
         return {
-            datos: JSON.parse(f),
-            archivo: archivoActual,
+            datos: {
+                res: [nuevoProyecto.w, nuevoProyecto.h],
+                capas: [
+                    {
+                        nombre: `${locale.layer} 1`,
+                        identificador: 0,
+                        visible: true,
+                        bloqueada: false
+                    },
+                    {
+                        nombre: locale.backgroundLayer,
+                        identificador: 1,
+                        visible: true,
+                        bloqueada: true
+                    }
+                ],
+                trazos: nuevoProyecto.incluirFondo ? [
+                    {
+                        capa: 1,
+                        color: "#FFFFFF",
+                        grosor: nuevoProyecto.h,
+                        puntos: [
+                            {
+                                x: 0,
+                                y: nuevoProyecto.h / 2
+                            },
+                            {
+                                x: nuevoProyecto.w,
+                                y: nuevoProyecto.h / 2
+                            }
+                        ],
+                        tipo: "trazo"
+                    }
+                ] : []
+            }
         };
+        nuevoProyecto = undefined;
     }
-    catch(err) {
-        dialog.showErrorBox(locale.parseFailureTitle, locale.parseFailure);
-        return;
+    else { 
+        try {
+            f = fs.readFileSync(archivoActual);
+        }
+        catch(err) {
+            dialog.showErrorBox(locale.loadFailureTitle, locale.loadFailure);
+            return;
+        }
+        try {
+            return {
+                datos: JSON.parse(f),
+                archivo: archivoActual,
+            };
+        }
+        catch(err) {
+            dialog.showErrorBox(locale.parseFailureTitle, locale.parseFailure);
+            return;
+        }
     }
 });
 
@@ -384,6 +431,8 @@ ipcMain.handle("abrirConfiguracionPNG", (event, args) => {
 ipcMain.handle("registrarCambio", (event, args) => {
     cambiado = args;
 });
+
+ipcMain.handle("nuevo", () => abrirArchivoActual(true));
 
 function errorFatal(err) {
     BrowserWindow.getAllWindows()[0].setTitle("Papa productions Vector but it's broken.");
@@ -487,16 +536,21 @@ function abrir(browserWindow, index) {
         archivoActual = f[0];
     }
     ponerEnRecientes(archivoActual);
-    nuevo();
-    cambiado = false;
+    abrirArchivoActual();
 }
 
-function nuevo() {
-    mainWindow.loadFile("app/dibujo.html");
-    cambiado = false;
-    cambiarRPC();
+async function abrirArchivoActual(nuevo = false) {
+    if(nuevo) {
+        archivoActual = undefined;
+        abrirVentana(600, 400, "app/project-config.html");
+    }
+    else {
+        cambiarRPC();
+        await mainWindow.loadFile("app/dibujo.html");
+    }
 }
 
 cliente.login({ clientId: idDiscord }).catch(() => console.log("Failed to connect with Discord."));
 
 cliente.on("ready", () => rpcListo = true);
+
