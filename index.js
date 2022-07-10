@@ -333,9 +333,11 @@ ipcMain.handle("obtenerLocale", (event, args) => {
 ipcMain.handle("obtenerArchivoActual", (event, args) => {
     let f;
     if(nuevoProyecto) {
+        let proyecto = nuevoProyecto;
+        nuevoProyecto = undefined;
         return {
             datos: {
-                res: [nuevoProyecto.w, nuevoProyecto.h],
+                res: [proyecto.w, proyecto.h],
                 capas: [
                     {
                         nombre: `${locale.layer} 1`,
@@ -350,19 +352,19 @@ ipcMain.handle("obtenerArchivoActual", (event, args) => {
                         bloqueada: true
                     }
                 ],
-                trazos: nuevoProyecto.incluirFondo ? [
+                trazos: proyecto.incluirFondo ? [
                     {
                         capa: 1,
                         color: "#FFFFFF",
-                        grosor: nuevoProyecto.h,
+                        grosor: proyecto.h,
                         puntos: [
                             {
                                 x: 0,
-                                y: nuevoProyecto.h / 2
+                                y: proyecto.h / 2
                             },
                             {
-                                x: nuevoProyecto.w,
-                                y: nuevoProyecto.h / 2
+                                x: proyecto.w,
+                                y: proyecto.h / 2
                             }
                         ],
                         tipo: "trazo"
@@ -370,7 +372,6 @@ ipcMain.handle("obtenerArchivoActual", (event, args) => {
                 ] : []
             }
         };
-        nuevoProyecto = undefined;
     }
     else { 
         try {
