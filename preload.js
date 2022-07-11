@@ -29,5 +29,5 @@ contextBridge.exposeInMainWorld("vector", {
     alCambiarBlending: callback => ipcRenderer.on("cambiarBlending", callback),
     alDeshabilitarBlending: callback => ipcRenderer.on("deshabilitarBlending", callback),
     nuevo: () => ipcRenderer.invoke("nuevo"),
-    nuevoProyecto: (w, h, incluirFondo) => ipcRenderer.invoke("nuevoProyecto", { w, h, incluirFondo })
+    nuevoProyecto: (w, h, fondo) => ipcRenderer.invoke("nuevoProyecto", { w, h, fondo })
 });

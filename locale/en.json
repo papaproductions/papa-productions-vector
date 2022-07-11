@@ -74,5 +74,6 @@
     "includeBackground": "Include background layer: ",
     "proyectConfigurationTitle": "{appname} - Create New Project",
     "saveImage": "Save image",
-    "createNewProject": "Create new project"
+    "createNewProject": "Create new project",
+    "backgroundColor": "Background Color: "
 }

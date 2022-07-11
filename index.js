@@ -335,27 +335,30 @@ ipcMain.handle("obtenerArchivoActual", (event, args) => {
     if(nuevoProyecto) {
         let proyecto = nuevoProyecto;
         nuevoProyecto = undefined;
+        let capas = [
+            {
+                nombre: `${locale.layer} 1`,
+                identificador: 0,
+                visible: true,
+                bloqueada: false
+            }
+        ];
+        if(proyecto.fondo) {
+            capas.push({
+                nombre: locale.backgroundLayer,
+                identificador: 1,
+                visible: true,
+                bloqueada: true
+            });
+        }
         return {
             datos: {
                 res: [proyecto.w, proyecto.h],
-                capas: [
-                    {
-                        nombre: `${locale.layer} 1`,
-                        identificador: 0,
-                        visible: true,
-                        bloqueada: false
-                    },
-                    {
-                        nombre: locale.backgroundLayer,
-                        identificador: 1,
-                        visible: true,
-                        bloqueada: true
-                    }
-                ],
-                trazos: proyecto.incluirFondo ? [
+                capas: capas,
+                trazos: proyecto.fondo ? [
                     {
                         capa: 1,
-                        color: "#FFFFFF",
+                        color: proyecto.fondo,
                         grosor: proyecto.h,
                         puntos: [
                             {
