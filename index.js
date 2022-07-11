@@ -229,6 +229,10 @@ Creado por: Kamil Alejandro`
     else {
         mainWindow.loadFile('./app/index.html').then(() => mainWindow.webContents.openDevTools()).catch(err => errorFatal(err));
     }
+    
+    mainWindow.on('closed', () => {
+        if (process.platform !== 'darwin') app.quit();
+    });
     ipcMain.handle("guardarImagen", (event, args) => {
         mainWindow.webContents.send("obtenerPNG", args);
     });
