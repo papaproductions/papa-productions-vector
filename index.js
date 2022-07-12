@@ -526,7 +526,7 @@ function guardarComo(browserWindow) {
     guardar(directorio, browserWindow);
 }
 
-function abrir(browserWindow, index) {
+async function abrir(browserWindow, index) {
     if(index >= 0) {
         archivoActual = recientes[index].path;
     }
@@ -554,7 +554,7 @@ async function abrirArchivoActual(nuevo = false) {
     }
     else {
         cambiarRPC();
-        await mainWindow.loadFile("app/dibujo.html");
+        mainWindow.loadFile("app/dibujo.html");
     }
 }
 
