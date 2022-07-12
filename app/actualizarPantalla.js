@@ -19,11 +19,11 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usar
     ctxBlending.lineCap = "round";
     ctxBlending.lineJoin = "round";
     for(let trazo of organizado) {
+        limpiarTodo(ctxBlending);
+        let blending = blendingHabilitado && usarBlending && trazo.blending;
+        let c = blending ? ctxBlending : ctx;
         switch(trazo.tipo) {
             case "trazo" :
-                limpiarTodo(ctxBlending);
-                let blending = blendingHabilitado && usarBlending && trazo.blending;
-                let c = blending ? ctxBlending : ctx;
                 c.beginPath();
                 try {
                     c.moveTo(trazo.puntos[0].x, trazo.puntos[0].y);
@@ -37,20 +37,6 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usar
                     c.lineTo(t.x, t.y);
                 });
                 c.stroke();
-                if(blending) {
-                    let imgBlending = c.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
-                    let img = ctx.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
-                    imgBlending.data.forEach((p, i) => {
-                        let n = p + img.data[i];
-                        if(n > 255) {
-                            img.data[i] = 255;
-                        }
-                        else {
-                            img.data[i] = n;
-                        }
-                    });
-                    ctx.putImageData(img, 0, 0);
-                }
             break;
             case "imagen" :
                 let imagen = cache.find(i => i.archivo === trazo.imagen);
@@ -60,16 +46,30 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usar
                     imagen.imagen.src = trazo.imagen;
                     await new Promise((resolve, reject) => {
                         imagen.imagen.addEventListener("load", () => {
-                            ctx.drawImage(imagen.imagen, trazo.x, trazo.y, trazo.w || imagen.imagen.width, trazo.h || imagen.imagen.height);
+                            c.drawImage(imagen.imagen, trazo.x, trazo.y, trazo.w || imagen.imagen.width, trazo.h || imagen.imagen.height);
                             cache.push(imagen);
                             resolve();
                         });
                     });
                 }
                 else {
-                    ctx.drawImage(imagen.imagen, trazo.x, trazo.y, trazo.w || imagen.imagen.width, trazo.h || imagen.imagen.height);
+                    c.drawImage(imagen.imagen, trazo.x, trazo.y, trazo.w || imagen.imagen.width, trazo.h || imagen.imagen.height);
                 }
             break;
+        }
+        if(blending) {
+            let imgBlending = c.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
+            let img = ctx.getImageData(0, 0, canvasBlending.width, canvasBlending.height);
+            imgBlending.data.forEach((p, i) => {
+                let n = p + img.data[i];
+                if(n > 255) {
+                    img.data[i] = 255;
+                }
+                else {
+                    img.data[i] = n;
+                }
+            });
+            ctx.putImageData(img, 0, 0);
         }
     }
     seleccionado.forEach((t, i) => {
