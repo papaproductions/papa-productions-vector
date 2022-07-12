@@ -10,6 +10,7 @@ const ayuda = new Menu();
 const package = require("./package.json");
 let recientes;
 let locale;
+let config = require("./config.json");
 let archivoActual;
 let cambiado = false;
 let fecha = new Date();
@@ -240,7 +241,7 @@ Creado por: Kamil Alejandro`
         catch {}
     }
     else {
-        mainWindow.loadFile('./app/index.html').then(() => mainWindow.webContents.openDevTools()).catch(err => errorFatal(err));
+        mainWindow.loadFile('./app/index.html').then(() => {if(config.debug) { console.log("Vector is in debug mode."); mainWindow.webContents.openDevTools(); }}).catch(err => errorFatal(err));
     }
     
     mainWindow.on('closed', () => {
