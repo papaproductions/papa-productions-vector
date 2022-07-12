@@ -10,7 +10,7 @@
   "author": "Kamil Alejandro",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^19.0.7"
+    "electron": "^19.0.8"
   },
   "dependencies": {
     "discord-rpc": "^4.0.1"
