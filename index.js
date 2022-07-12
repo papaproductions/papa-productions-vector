@@ -8,7 +8,7 @@ const archivo = new Menu();
 const edicion = new Menu();
 const ayuda = new Menu();
 const package = require("./package.json");
-let recientes = require("./recent.json");
+let recientes;
 let locale;
 let archivoActual;
 let cambiado = false;
@@ -27,6 +27,19 @@ let plataformas = {
 };
 let rpcListo = false;
 let nuevoProyecto;
+
+try {
+    process.stdout.write("Checking if recent.json exists... ");
+    fs.statSync(path.join(__dirname, "recent.json"));
+    console.log("It does!");
+}
+catch {
+    console.log("nope.");
+    console.log("Writing an empty array into recent.json...");
+    fs.writeFileSync(path.join(__dirname, "recent.json"), "[]");
+}
+
+recientes = require("./recent.json");
 
 function createWindow() {
     // Create the browser window.
