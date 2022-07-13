@@ -366,7 +366,8 @@ vector.obtenerLocale().then(l => {
     rehacerB.addEventListener("click", rehacer);
 
     document.addEventListener("keydown", ev => {
-        if(ev.ctrlKey) {
+        let ctrl = plataforma === "darwin" ? ev.metaKey : ev.ctrlKey;
+        if(ctrl) {
             ev.preventDefault();
             switch(ev.key.toLowerCase()) {
                 case "z" :
@@ -408,7 +409,8 @@ vector.obtenerLocale().then(l => {
     });
     document.addEventListener("keyup", async ev => {
         if(!ev.shiftKey) shiftPresionado = false;
-        if(ev.ctrlKey) {
+        let ctrl = plataforma === "darwin" ? ev.metaKey : ev.ctrlKey;
+        if(ctrl) {
             switch(ev.key.toLowerCase()) {
                 case "s" :
                     if(shiftPresionado) {
