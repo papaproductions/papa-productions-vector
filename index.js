@@ -107,6 +107,14 @@ function createWindow() {
             mainWindow.webContents.send("importarImagen", imagenes);
         }
     }));
+    if(config.debug) {
+        archivo.append(new MenuItem({
+            label: locale.devTools,
+            click: (menuItem, browserWindow, event) => {
+                mainWindow.webContents.openDevTools();
+            }
+        }));
+    }
     archivo.append(new MenuItem({
         label: locale.menuBarFileExit,
         click: () => {

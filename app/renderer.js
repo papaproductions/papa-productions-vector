@@ -888,32 +888,6 @@ function moverAlFondo(trazos) {
     actualizarPantalla(ctx, datos, seleccionado);
 }
 
-function moverAdelante(trazos) {
-    for(let t of trazos) {
-        let i = datos.trazos.indexOf(t);
-        array_move(datos.trazos, i, i - 1);
-    }
-    actualizarPantalla(ctx, datos, seleccionado);
-}
-function moverAtras(trazos) {
-    for(let t of trazos) {
-        let i = datos.trazos.indexOf(t);
-        array_move(datos.trazos, i, i + 1);
-    }
-    actualizarPantalla(ctx, datos, seleccionado);
-}
-//robado de stackoverflow woperjakdfjklasdjflasndcvkzxjgvsyudifj
-function array_move(arr, old_index, new_index) {
-    if (new_index >= arr.length) {
-        var k = new_index - arr.length + 1;
-        while (k--) {
-            arr.push(undefined);
-        }
-    }
-    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-    return arr; // for testing
-}
-
 vector.alMoverAlFrente(() => moverAlFrente(seleccionado));
 vector.alMoverAlFondo(() => moverAlFondo(seleccionado));
 
@@ -981,6 +955,7 @@ function escalarTrazos(trazos, posicion, ultimaPosicion, escalarX = 1, escalarY 
     });
     botonPresionado = obtenerBoton(posicionBoton);
     return trazos;
+    
 }
 
 vector.alCambiarBlending((event, args) => {
