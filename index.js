@@ -518,7 +518,7 @@ function ponerEnRecientes(archivo) {
     }
     opcionRecientes.submenu.insert(0, obtenerMenuItemsDeRecientes(mainWindow)[0]);
     Menu.setApplicationMenu(menu);
-    fs.writeFileSync("recent.json", JSON.stringify(recientes));
+    fs.writeFileSync(path.join(__dirname, "recent.json"), JSON.stringify(recientes));
 }
 
 function guardarComo(browserWindow) {
