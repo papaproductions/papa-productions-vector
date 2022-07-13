@@ -271,6 +271,9 @@ vector.obtenerLocale().then(l => {
         let posicionMouse = { x: ev.clientX * parseFloat(canvas.width) / rect.width - rect.left, y: ev.clientY * parseFloat(canvas.height) / rect.height - rect.top };
         actualizarPantalla(ctx, datos, seleccionado);
         switch(modo) {
+            case "borrador" :
+                vector.mostrarError({ title: locale.eraserWIPTitle, message: locale.eraserWIP});
+            break;
             case "pincel" :
                 registrarCambio();
                 ponerEnHistorial({

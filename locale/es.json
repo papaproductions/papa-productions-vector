@@ -75,5 +75,7 @@
     "proyectConfigurationTitle": "{appname} - Crear nuevo proyecto",
     "saveImage": "Guardar imagen",
     "createNewProject": "Crear nuevo proyecto",
-    "backgroundColor": "Color de fondo: "
+    "backgroundColor": "Color de fondo: ",
+    "eraserWIPTitle": "tengo pereza",
+    "eraserWIP": "El borrador no ha sido implementado (todavía)."
 }

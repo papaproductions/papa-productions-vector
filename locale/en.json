@@ -75,5 +75,7 @@
     "proyectConfigurationTitle": "{appname} - Create New Project",
     "saveImage": "Save image",
     "createNewProject": "Create new project",
-    "backgroundColor": "Background Color: "
+    "backgroundColor": "Background Color: ",
+    "eraserWIPTitle": "I'm lazy",
+    "eraserWIP": "The eraser has not been implemented (yet)."
 }
