@@ -110,7 +110,7 @@ function createWindow() {
     archivo.append(new MenuItem({
         label: locale.menuBarFileExit,
         click: () => {
-            app.quit();
+            app.exit();
         }
     }));
 
