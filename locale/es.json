@@ -77,5 +77,6 @@
     "createNewProject": "Crear nuevo proyecto",
     "backgroundColor": "Color de fondo: ",
     "eraserWIPTitle": "tengo pereza",
-    "eraserWIP": "El borrador no ha sido implementado (todavía)."
+    "eraserWIP": "El borrador no ha sido implementado (todavía).",
+    "devTools": "Abrir Chrome DevTools"
 }

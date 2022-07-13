@@ -77,5 +77,6 @@
     "createNewProject": "Create new project",
     "backgroundColor": "Background Color: ",
     "eraserWIPTitle": "I'm lazy",
-    "eraserWIP": "The eraser has not been implemented (yet)."
+    "eraserWIP": "The eraser has not been implemented (yet).",
+    "devTools": "Open Chrome DevTools"
 }
