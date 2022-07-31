@@ -9,7 +9,7 @@
     "access": "&Uacute;ltima vez accedido:",
     "recent": "Recientes:",
     "untitled": "Sin titulo",
-    "mainTitle": "{appname} para {os}, archivo: {file}, herramienta seleccionada: {tool}",
+    "mainTitle": "{appname} para {os}, archivo: {file}{compatibilityMode}, herramienta seleccionada: {tool}",
     "layer": "Capa",
     "error": "Error",
     "layerMoveFailureTitle": "Ninguna capa seleccionada",
@@ -78,5 +78,6 @@
     "backgroundColor": "Color de fondo: ",
     "eraserWIPTitle": "tengo pereza",
     "eraserWIP": "El borrador no ha sido implementado (todavía).",
-    "devTools": "Abrir Chrome DevTools"
+    "devTools": "Abrir Chrome DevTools",
+    "compatibilityMode": " (Modo de compatibilidad)"
 }

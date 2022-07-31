@@ -109,21 +109,20 @@ async function actualizarPantalla(ctx, datos, seleccionado, limpiar = true, usar
 function obtenerExtremos(trazos) {
     let puntosX = [];
     let puntosY = [];
+    let puntos = [];
     trazos.forEach(t => {
         switch(t.tipo) {
             case "trazo" :
-                puntosX = puntosX.concat(t.puntos.map(p => p.x));
-                puntosY = puntosY.concat(t.puntos.map(p => p.y));
+                puntos = puntos.concat(t.puntos);
             break;
             case "imagen" :
                 let imagen = cache.find(i => i.archivo === t.imagen).imagen;
-                puntosX.push(t.x, t.x + (t.w || imagen.width));
-                puntosY.push(t.y, t.y + (t.h || imagen.height));
+                puntos.push({ x: t.x, y: t.y }, { x: t.x + (t.w || imagen.width), y: t.y + (t.h || imagen.height)});
             break;
         }
     });
-    puntosX = puntosX.sort((a, b) => a - b);
-    puntosY = puntosY.sort((a, b) => a - b);
+    puntosX = puntos.sort((a, b) => a.x - b.x).map(p => p.x);
+    puntosY = puntos.sort((a, b) => a.y - b.y).map(p => p.y);
     return { puntosX, puntosY };
 }
 

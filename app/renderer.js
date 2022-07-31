@@ -6,6 +6,7 @@ let ctx = canvas.getContext("2d");
 let datos = {};
 let elementos = ["bloqueada", "visible", "seleccion", "pincel", "borrador", "canvas", "capas", "nombreCapa", "arribaCapa", "abajoCapa", "quitarCapaB", "ponerCapaB", "color", "grosor", "deshacerB", "rehacerB"];
 let e = {};
+let modoCompatibilidad = false;
 let plataforma = "";
 let shiftPresionado = false;
 let archivoActual;
@@ -502,6 +503,7 @@ function configurar() {
             }
         }
         if(d.archivo) archivoActual = d.archivo;
+        modoCompatibilidad = d.formatoViejo;
         canvas.width = datos.res[0];
         canvas.height = datos.res[1];
         actualizarPantalla(ctx, datos, seleccionado);
@@ -799,7 +801,7 @@ vector.alObtenerPNG((event, args) => {
 });
 
 function actualizarTitulo() {
-    document.title = `${cambiado ? "* " : ""}${locale.mainTitle.replace(/{appname}/g, locale.appname).replace(/{os}/g, plataformas[plataforma]).replace(/{file}/g, archivoActual).replace(/{tool}/g, herramientas[modo])}`;
+    document.title = `${cambiado ? "* " : ""}${locale.mainTitle.replace(/{appname}/g, locale.appname).replace(/{os}/g, plataformas[plataforma]).replace(/{file}/g, archivoActual).replace(/{tool}/g, herramientas[modo]).replace(/{compatibilityMode}/, modoCompatibilidad ? locale.compatibilityMode : "")}`;
 }
 
 function ponerEnHistorial(datos) {

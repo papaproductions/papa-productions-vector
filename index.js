@@ -3,11 +3,13 @@ const { app, BrowserWindow, ipcMain, Menu, dialog, MenuItem } = require('electro
 const RPC = require("discord-rpc");
 const path = require('path');
 const fs = require("fs");
+const zlib = require("zlib");
 const menu = new Menu();
 const archivo = new Menu();
 const edicion = new Menu();
 const ayuda = new Menu();
 const package = require("./package.json");
+let header = "VECT";
 let recientes;
 let locale;
 let config = require("./config.json");
@@ -337,11 +339,11 @@ ipcMain.handle("obtenerRecientes", (event, args) => {
         let archivo = JSON.parse(JSON.stringify(f));
         let jumpscare = JSON.parse(fs.readFileSync(path.join(__dirname, "jumpscare.ppv")).toString());
         try {
-            archivo.data = diaDeLosInocentes ? jumpscare : JSON.parse(fs.readFileSync(f.path).toString());
+            archivo.data = diaDeLosInocentes ? jumpscare : cargarProyecto(fs.readFileSync(f.path));
             archivo.exists = true;
         }
         catch(err) {
-            archivo.data = JSON.parse(fs.readFileSync(path.join(__dirname, "pregunta.ppv")).toString());
+            archivo.data = cargarProyecto(fs.readFileSync(path.join(__dirname, "pregunta.ppv")));
             archivo.exists = false;
         }
         return archivo;
@@ -412,8 +414,9 @@ ipcMain.handle("obtenerArchivoActual", (event, args) => {
         }
         try {
             return {
-                datos: JSON.parse(f),
+                datos: cargarProyecto(f),
                 archivo: archivoActual,
+                formatoViejo: !revisarHeader(f)
             };
         }
         catch(err) {
@@ -432,6 +435,14 @@ ipcMain.handle("guardarComo", (event, args) => {
 });
 
 ipcMain.handle("cambiarRPC", (event, args) => cambiarRPC());
+
+function cargarProyecto(datos) {
+    return revisarHeader(datos) ? descomprimir(datos) : JSON.parse(datos.toString());
+}
+
+function revisarHeader(datos) {
+    return datos.slice(0, header.length).toString() === header;
+}
 
 ipcMain.handle("guardar", (event, args) => {
     if(archivoActual) {
@@ -488,7 +499,7 @@ function guardar(f, browserWindow) {
                     fs.writeFileSync(f, datos);
                 break;
                 default:
-                    fs.writeFileSync(f, JSON.stringify(datos));
+                    fs.writeFileSync(f, comprimir(datos));
                     ponerEnRecientes(f);
                 break;
             }
@@ -584,3 +595,14 @@ cliente.login({ clientId: idDiscord }).catch(() => console.log("Failed to connec
 
 cliente.on("ready", () => rpcListo = true);
 
+
+function comprimir(datos) {
+    let headerB = Buffer.from(header);
+    let salida = Buffer.concat([headerB, zlib.gzipSync(JSON.stringify(datos))]);
+    return salida;
+}
+
+function descomprimir(datos) {
+    if(datos.slice(0, header.length).toString() !== header) throw new Error("No es un archivo de vector.");
+    return JSON.parse(zlib.unzipSync(datos.slice(header.length)));
+}

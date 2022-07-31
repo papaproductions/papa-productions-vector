@@ -9,7 +9,7 @@
     "access": "Last time accessed:",
     "recent": "Recent:",
     "untitled": "Untitled",
-    "mainTitle": "{appname} running on {os}, file: {file}, selected tool: {tool}",
+    "mainTitle": "{appname} running on {os}, file: {file}{compatibilityMode}, selected tool: {tool}",
     "layer": "Layer",
     "error": "Error",
     "layerMoveFailureTitle": "No layer selected.",
@@ -78,5 +78,6 @@
     "backgroundColor": "Background Color: ",
     "eraserWIPTitle": "I'm lazy",
     "eraserWIP": "The eraser has not been implemented (yet).",
-    "devTools": "Open Chrome DevTools"
+    "devTools": "Open Chrome DevTools",
+    "compatibilityMode": " (Compatibility Mode)"
 }
