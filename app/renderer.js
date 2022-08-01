@@ -400,10 +400,28 @@ vector.obtenerLocale().then(l => {
             }
         }
         else {
+            let x = 0;
+            let y = 0;
             switch(ev.key.toLowerCase()) {
                 case "t" :
                     grosor.value--;
                 break;
+                case "arrowup" :
+                    y--;
+                break;
+                case "arrowdown" :
+                    y++;
+                break;
+                case "arrowleft" :
+                    x--;
+                break;
+                case "arrowright" :
+                    x++;
+                break;
+            }
+            if(x !== 0 || y !== 0) {
+                moverTrazo({ x: x, y: y }, { x: 0, y: 0 });
+                actualizarPantalla(ctx, datos, seleccionado);
             }
         }
         if(ev.shiftKey) shiftPresionado = true;
